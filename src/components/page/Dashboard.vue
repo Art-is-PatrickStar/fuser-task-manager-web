@@ -19,9 +19,10 @@
                         <span>东莞</span>
                     </div>
                 </el-card>
+                <!-- 这里设计任务详情，待设计... -->
                 <el-card shadow="hover" style="height:252px;">
                     <div slot="header" class="clearfix">
-                        <span>语言详情</span>
+                        <span>任务详情</span>
                     </div>Vue
                     <el-progress :percentage="71.3" color="#42b983"></el-progress>JavaScript
                     <el-progress :percentage="24.1" color="#f1e05a"></el-progress>CSS
@@ -30,7 +31,7 @@
                 </el-card>
             </el-col>
             <el-col :span="16">
-                <el-row :gutter="20" class="mgb20">
+                <!-- <el-row :gutter="20" class="mgb20">
                     <el-col :span="8">
                         <el-card shadow="hover" :body-style="{padding: '0px'}">
                             <div class="grid-content grid-con-1">
@@ -64,7 +65,7 @@
                             </div>
                         </el-card>
                     </el-col>
-                </el-row>
+                </el-row> -->
                 <el-card shadow="hover" style="height:403px;">
                     <div slot="header" class="clearfix">
                         <span>待办事项</span>
@@ -94,7 +95,7 @@
                 </el-card>
             </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <!-- <el-row :gutter="20">
             <el-col :span="12">
                 <el-card shadow="hover">
                     <schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>
@@ -105,7 +106,7 @@
                     <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
                 </el-card>
             </el-col>
-        </el-row>
+        </el-row> -->
     </div>
 </template>
 
