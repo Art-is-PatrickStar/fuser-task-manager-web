@@ -19,11 +19,11 @@ export default new Router({
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
                     meta: { title: '系统首页' }
                 },
-                {
-                    path: '/icon',
-                    component: () => import(/* webpackChunkName: "icon" */ '../components/page/Icon.vue'),
-                    meta: { title: '自定义图标' }
-                },
+                // {
+                //     path: '/icon',
+                //     component: () => import(/* webpackChunkName: "icon" */ '../components/page/Icon.vue'),
+                //     meta: { title: '自定义图标' }
+                // },
                 {
                     path: '/task-manage',
                     component: () => import(/* webpackChunkName: "table" */ '../components/page/TaskManage.vue'),
