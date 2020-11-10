@@ -15,13 +15,12 @@
                         <span>2019-11-01</span>
                     </div>
                     <div class="user-info-list">
-                        上次登录地点：
-                        <span>东莞</span>
+                        座右铭：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span>Fuck使我快乐</span>
                     </div>
                 </el-card>
-                <!-- 这里设计任务详情，待设计... -->
                 <el-card shadow="hover" style="height:252px;">
-                    <div slot="header" class="clearfix">
+                    <div slot="header" class="clearfix" style="display: flex">
                         <span>任务详情</span>
                     </div>Vue
                     <el-progress :percentage="71.3" color="#42b983"></el-progress>JavaScript
@@ -31,45 +30,21 @@
                 </el-card>
             </el-col>
             <el-col :span="16">
-                <!-- <el-row :gutter="20" class="mgb20">
-                    <el-col :span="8">
-                        <el-card shadow="hover" :body-style="{padding: '0px'}">
-                            <div class="grid-content grid-con-1">
-                                <i class="el-icon-lx-people grid-con-icon"></i>
-                                <div class="grid-cont-right">
-                                    <div class="grid-num">1234</div>
-                                    <div>用户访问量</div>
-                                </div>
-                            </div>
-                        </el-card>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-card shadow="hover" :body-style="{padding: '0px'}">
-                            <div class="grid-content grid-con-2">
-                                <i class="el-icon-lx-notice grid-con-icon"></i>
-                                <div class="grid-cont-right">
-                                    <div class="grid-num">321</div>
-                                    <div>系统消息</div>
-                                </div>
-                            </div>
-                        </el-card>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-card shadow="hover" :body-style="{padding: '0px'}">
-                            <div class="grid-content grid-con-3">
-                                <i class="el-icon-lx-goods grid-con-icon"></i>
-                                <div class="grid-cont-right">
-                                    <div class="grid-num">5000</div>
-                                    <div>数量</div>
-                                </div>
-                            </div>
-                        </el-card>
-                    </el-col>
-                </el-row> -->
-                <el-card shadow="hover" style="height:403px;">
-                    <div slot="header" class="clearfix">
+                <el-card shadow="hover" style="height:524px;">
+
+                    <div slot="header" class="clearfix" style="align-items:center; display:flex; justify-content:space-between;">
                         <span>待办事项</span>
-                        <el-button style="float: right; padding: 3px 0" type="text">添加</el-button>
+                      <div>
+                        <el-select style="width: 100px; margin-right: 10px;" v-model="value" placeholder="请选择">
+                          <el-option
+                              v-for="item in options3"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                          </el-option>
+                        </el-select>
+                      <el-button type="primary">添加</el-button>
+                      </div>
                     </div>
                     <el-table :show-header="false" :data="todoList" style="width:100%;">
                         <el-table-column width="40">
@@ -92,10 +67,11 @@
                             </template>
                         </el-table-column>
                     </el-table>
+
                 </el-card>
             </el-col>
         </el-row>
-        <!-- <el-row :gutter="20">
+        <el-row :gutter="20">
             <el-col :span="12">
                 <el-card shadow="hover">
                     <schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>
@@ -106,7 +82,7 @@
                     <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
                 </el-card>
             </el-col>
-        </el-row> -->
+        </el-row>
     </div>
 </template>
 
@@ -216,7 +192,21 @@ export default {
                         data: [74, 118, 200, 235, 90]
                     }
                 ]
-            }
+            },
+          options3: [{
+            value: '全部',
+            label: '全部'
+          },{
+            value: '未开发',
+            label: '未开发'
+          }, {
+            value: '未测试',
+            label: '未测试'
+          }, {
+            value: '自定义',
+            label: '自定义'
+          }],
+          value:''
         };
     },
     components: {
