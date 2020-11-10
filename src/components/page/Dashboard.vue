@@ -37,16 +37,16 @@
                       <div>
                         <el-select style="width: 100px; margin-right: 10px;" v-model="value" placeholder="请选择">
                           <el-option
-                              v-for="item in options3"
+                              v-for="item in options"
                               :key="item.value"
                               :label="item.label"
                               :value="item.value">
                           </el-option>
                         </el-select>
-                      <el-button type="primary">添加</el-button>
+                      <el-button type="primary" @click="dialogFormVisible = true">添加</el-button>
                       </div>
                     </div>
-                    <el-table :show-header="false" :data="todoList" style="width:100%;">
+                    <el-table :show-header="false" :data="todoList" style="width:100%;" >
                         <el-table-column width="40">
                             <template slot-scope="scope">
                                 <el-checkbox v-model="scope.row.status"></el-checkbox>
@@ -55,44 +55,85 @@
                         <el-table-column>
                             <template slot-scope="scope">
                                 <div
+                                    v-if=" isEdit != scope.$index"
                                     class="todo-item"
                                     :class="{'todo-item-del': scope.row.status}"
-                                >{{scope.row.title}}</div>
+                                >
+                                 {{scope.row.title}}
+                                 </div>
+                              <el-input v-if=" isEdit == scope.$index " v-model="scope.row.title" style="padding: 0px"></el-input>
                             </template>
                         </el-table-column>
-                        <el-table-column width="60">
-                            <template>
-                                <i class="el-icon-edit"></i>
-                                <i class="el-icon-delete"></i>
-                            </template>
+                        <el-table-column
+                            width="140"
+                        >
+                          <template slot-scope="scope">
+                            <el-button
+                                v-if="isEdit == scope.$index"
+                                type="text"
+                                size="small"
+                                icon="el-icon-check"
+                                @click="handleEdit(scope.$index, scope.row, 1)"
+                            >
+                              保存
+                            </el-button>
+                            <el-button
+                                v-if="isEdit != scope.$index"
+                                type="text"
+                                size="small"
+                                icon="el-icon-edit"
+                                @click.native.prevent="handleEdit(scope.$index, scope.row,0)"
+                            >
+                              编辑
+                            </el-button>
+                            <el-button
+                                @click.native.prevent="handleDelete(scope.$index, scope.row)"
+                                type="text"
+                                size="small"
+                                icon="el-icon-delete"
+                            >
+                              移除
+                            </el-button>
+                          </template>
                         </el-table-column>
                     </el-table>
 
                 </el-card>
             </el-col>
         </el-row>
-        <el-row :gutter="20">
-            <el-col :span="12">
-                <el-card shadow="hover">
-                    <schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>
-                </el-card>
-            </el-col>
-            <el-col :span="12">
-                <el-card shadow="hover">
-                    <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
-                </el-card>
-            </el-col>
-        </el-row>
+      <div>
+        <el-dialog title="增加待办" center="true" :visible.sync="dialogFormVisible">
+            <el-form :model="task" center="true" >
+              <el-row>
+                <el-col :span="19">
+                  <el-form-item label="待办事项" :label-width="formLabelWidth" :label-position="right">
+                    <el-input v-model="task.name" autocomplete="off"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="1">
+                  <el-button type="text" visible="false"></el-button>
+                </el-col>
+                <el-col :span="3">
+                  <el-button type="primary" style="" @click="dialogFormVisible = false">确 定</el-button>
+                </el-col>
+              </el-row>
+            </el-form>
+
+        </el-dialog>
+      </div>
     </div>
+
 </template>
 
 <script>
+
 import Schart from 'vue-schart';
 import bus from '../common/bus';
 export default {
     name: 'dashboard',
     data() {
         return {
+            isEdit: -99,  //是否是编辑状态
             name: localStorage.getItem('ms_username'),
             todoList: [
                 {
@@ -120,80 +161,7 @@ export default {
                     status: true
                 }
             ],
-            data: [
-                {
-                    name: '2018/09/04',
-                    value: 1083
-                },
-                {
-                    name: '2018/09/05',
-                    value: 941
-                },
-                {
-                    name: '2018/09/06',
-                    value: 1139
-                },
-                {
-                    name: '2018/09/07',
-                    value: 816
-                },
-                {
-                    name: '2018/09/08',
-                    value: 327
-                },
-                {
-                    name: '2018/09/09',
-                    value: 228
-                },
-                {
-                    name: '2018/09/10',
-                    value: 1065
-                }
-            ],
-            options: {
-                type: 'bar',
-                title: {
-                    text: '最近一周各品类销售图'
-                },
-                xRorate: 25,
-                labels: ['周一', '周二', '周三', '周四', '周五'],
-                datasets: [
-                    {
-                        label: '家电',
-                        data: [234, 278, 270, 190, 230]
-                    },
-                    {
-                        label: '百货',
-                        data: [164, 178, 190, 135, 160]
-                    },
-                    {
-                        label: '食品',
-                        data: [144, 198, 150, 235, 120]
-                    }
-                ]
-            },
-            options2: {
-                type: 'line',
-                title: {
-                    text: '最近几个月各品类销售趋势图'
-                },
-                labels: ['6月', '7月', '8月', '9月', '10月'],
-                datasets: [
-                    {
-                        label: '家电',
-                        data: [234, 278, 270, 190, 230]
-                    },
-                    {
-                        label: '百货',
-                        data: [164, 178, 150, 135, 160]
-                    },
-                    {
-                        label: '食品',
-                        data: [74, 118, 200, 235, 90]
-                    }
-                ]
-            },
-          options3: [{
+          options: [{
             value: '全部',
             label: '全部'
           },{
@@ -206,8 +174,14 @@ export default {
             value: '自定义',
             label: '自定义'
           }],
-          value:''
+          value:'',
+          dialogFormVisible: false,
+          formLabelWidth: '120px',
+          task:{
+              name:''
+          }
         };
+
     },
     components: {
         Schart
@@ -235,7 +209,42 @@ export default {
                 const date = new Date(now - (6 - index) * 86400000);
                 item.name = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
             });
+        },
+      handleEdit(index, row, status) {
+        if(!row.status) {
+          switch (status) {
+            case 0:
+              this.isEdit = index;
+              break;
+            case 1:
+              this.isEdit = -99;
+              break;
+          }
+        }else{
+          this.$alert('大佬，已完成的待办事项不能编辑', '提示', {
+            confirmButtonText: '确定',
+            type: 'info'
+          });
         }
+      },
+      handleDelete(index, row) {
+        this.$confirm('这将会永久删除该行数据，是否继续?', '警告', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.todoList.splice(index, 1);
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
         // handleListener() {
         //     bus.$on('collapse', this.handleBus);
         //     // 调用renderChart方法对图表进行重新渲染
